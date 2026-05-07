@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبات للعطور | Thabat Fragrances</title>
+    <style>
+        :root {
+            --gold: #857a62;
+            --black: #1a1a1a;
+            --white: #ffffff;
+            --grey: #f4f4f4;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--white);
+            color: var(--black);
+            direction: rtl;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--black);
+            color: var(--gold);
+            padding: 1rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        header h1 { margin: 0; font-size: 1.5rem; letter-spacing: 1px; }
+
+        .cart-icon {
+            cursor: pointer;
+            position: relative;
+            font-size: 1.8rem;
+        }
+
+        #cart-count {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 7px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('image/THABAT  THUMNAIL.png');
+            background-size: cover;
+            background-position: center;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--gold);
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h2 { font-size: 2.5rem; margin-bottom: 10px; }
+
+        /* Products Grid */
+        .container { padding: 3rem 5%; }
+        .section-title { text-align: center; margin-bottom: 3rem; font-size: 2rem; position: relative; }
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 3px;
+            background: var(--gold);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .product-card {
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            border-color: var(--gold);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-card h3 { font-size: 1.3rem; margin: 10px 0; }
+        .product-card .price { color: var(--gold); font-size: 1.2rem; font-weight: bold; margin-bottom: 20px; }
+
+        .add-to-cart-btn {
+            background: var(--black);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            padding: 12px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .add-to-cart-btn:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        /* Sidebar Cart */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            left: -100%; /* Hidden on the left for RTL flow */
+            width: 350px;
+            height: 100%;
+            background: white;
+            z-index: 2000;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.2);
+            transition: 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.active { left: 0; }
+
+        .cart-header {
+            padding: 20px;
+            background: var(--black);
+            color: var(--gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-cart { cursor: pointer; font-size: 1.5rem; }
+
+        #cart-items-container {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .cart-item-info { flex: 1; margin-right: 15px; }
+        .cart-item-info h4 { margin: 0; font-size: 1rem; }
+        .cart-item-info p { margin: 5px 0; color: var(--gold); font-weight: bold; }
+
+        .remove-item {
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: underline;
+        }
+
+        .cart-footer {
+            padding: 20px;
+            border-top: 2px solid var(--grey);
+        }
+
+        .total-box {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .whatsapp-btn {
+            background: #25d366;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .whatsapp-btn:hover { opacity: 0.9; }
+
+        /* Footer */
+        footer {
+            background: var(--black);
+            color: #888;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 400px) {
+            .cart-sidebar { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1> THABATT Fragrances </h1>
+        <div class="cart-icon" onclick="toggleCart()">
+            🛒 <span id="cart-count">0</span>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h2>THABATT FRAGRANCES</h2>
+        <p>"Inspired by stability Crafted for the soul."</p>
+    </section>
+
+    <div class="container">
+        <h2 class="section-title">SUMMER COLLECTION</h2>
+        <div class="products-grid">
+            <!-- المنتج 1 -->
+            <div class="product-card">
+                <img src="image/THABAA1.png" alt="WATER">
+                <h3>WATER </h3>
+                <br style="font-size: 1.2rem;">INSPIRED BY SYMPHONY</br>
+                <p class="price">700 ج.م</p>
+                <button class="add-to-cart-btn" onclick="addToCart('WATER ', 700)">إضافة للسلة</button>
+            </div>
+
+            <!-- المنتج 2 -->
+            <div class="product-card">
+                <img src="image/THABT2.png" alt="Sakhr 40">
+                <h3>Sakhr 40</h3>
+                    <br style="font-size: 1.2rem;">INSPIRED BY Xerjoff 40 nots</br>
+                <p class="price">500 ج.م</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Sakhr 40', 500)">إضافة للسلة</button>
+            </div>
+
+            <!-- المنتج 3 -->
+            <div class="product-card">
+                <img src="image/thbat 3.png" alt="AZRAQ">
+                <h3>AZRAQ</h3>
+                <br style="font-size: 1.2rem;">INSPIRED BY Bleu de Chanel</br>
+                <p class="price">500 ج.م</p>
+                <button class="add-to-cart-btn" onclick="addToCart('AZRAQ', 500)">إضافة للسلة</button>
+            </div>
+            
+            <!-- المنتج 4 -->
+            <div class="product-card">
+                <img src="image/THBAT4.png" alt=" Jannah">
+                <h3>Jannah </h3>
+                <br style="font-size: 1.2rem;">INSPIRED BY Erba Pura </br>
+                <p class="price">500 ج.م</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Jannah ', 500)">إضافة للسلة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- السلة الجانبية -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>سلة المشتريات</h3>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+        <div id="cart-items-container">
+            <!-- المنتجات المضافة ستظهر هنا -->
+        </div>
+        <div class="cart-footer">
+            <div class="total-box">
+                <span>الإجمالي:</span>
+                <span><span id="total-price">0</span> ج.م</span>
+            </div>
+            <button class="whatsapp-btn" onclick="checkoutWhatsApp()">
+                تأكيد الطلب عبر واتساب
+            </button>
+        </div>
+    </div>
+
+    <footer>
+        <p>جميع الحقوق محفوظة لبراند ثبات للعطور &copy; 2026</p>
+        <p>صنع بكل حب لعشاق الفخامة</p>
+    </footer>
+
+    <script>
+        let cart = [];
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('active');
+        }
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            updateCartUI();
+            // فتح السلة تلقائياً عند الإضافة
+            if(!document.getElementById('cartSidebar').classList.contains('active')) {
+                toggleCart();
+            }
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const count = document.getElementById('cart-count');
+            const totalElement = document.getElementById('total-price');
+            
+            container.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.price} ج.م</p>
+                            <span class="remove-item" onclick="removeItem(${index})">حذف</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            count.innerText = cart.length;
+            totalElement.innerText = total;
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                alert("السلة فارغة، أضف بعض العطور أولاً!");
+                return;
+            }
+
+            let phone = "201061140753"; // ضع رقمك الحقيقي هنا
+            let message = "طلب جديد من موقع ثبات للعطور:\n---------------------------\n";
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                message += `${index + 1}. ${item.name} - ${item.price} ج.م\n`;
+                total += item.price;
+            });
+
+            message += "---------------------------\n";
+            message += `الإجمالي الكلي: ${total} ج.م`;
+
+            const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
